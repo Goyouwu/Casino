@@ -44,33 +44,34 @@ body {
 /* Rejilla de los rodillos */
 .reels {
   display: grid;
-  grid-template-columns: repeat(5, 70px);
-  grid-template-rows: repeat(3, 70px);
-  gap: 5px;
+  grid-template-columns: repeat(5, 80px); /* Aumentado de 70px */
+  grid-template-rows: repeat(3, 80px);     /* Aumentado de 70px */
+  gap: 12px;                               /* Aumentado el espacio entre columnas y filas */
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 /* Cada celda del rodillo */
 .reel {
-  width: 70px;
-  height: 70px;
+  width: 80px;  /* Aumentado */
+  height: 80px; /* Aumentado */
   background: #1a1a1a;
   border: 3px solid #00c3ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   animation: spin-fall 0.6s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3); /* profundidad mejorada */
 }
 
 /* Imagen dentro del rodillo */
 .reel img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
-  transform: scale(1.1);
+  transform: scale(1.05);
   transition: transform 0.3s ease;
 }
 
