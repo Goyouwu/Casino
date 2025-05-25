@@ -19,28 +19,29 @@ document.getElementById("soundToggle").addEventListener("click", () => {
 
 const symbols = [
   { name: "hombre", img: "img/Hombre.png", weight: 25 },
-  { name: "sofa", img: "img/sofa.png", weight: 20 },
-  { name: "maletin", img: "img/maletin.png", weight: 15 },
-  { name: "wild", img: "img/Wild.png", weight: 6 },
-  { name: "corazon", img: "img/corazon.png", weight: 10 },
-  { name: "mascota", img: "img/Mascota.png", weight: 8 },
-  { name: "auto", img: "img/auto.png", weight: 6 },
-  { name: "dinero", img: "img/dinero.png", weight: 6 },
-  { name: "casa", img: "img/casa.png", weight: 4 },
-  { name: "casa-bonus", img: "img/casa-bonus.png", weight: 3 }
+  { name: "sofa", img: "img/sofa.png", weight: 22 },
+  { name: "maletin", img: "img/maletin.png", weight: 18 },
+  { name: "corazon", img: "img/corazon.png", weight: 15 },
+  { name: "mascota", img: "img/Mascota.png", weight: 12 },
+  { name: "auto", img: "img/auto.png", weight: 10 },
+  { name: "dinero", img: "img/dinero.png", weight: 8 },
+  { name: "casa", img: "img/casa.png", weight: 5 },
+  { name: "wild", img: "img/Wild.png", weight: 3 },
+  { name: "casa-bonus", img: "img/casa-bonus.png", weight: 2 }
 ];
 
+
 const payouts = {
-  hombre:     { 3: 1,   4: 3,   5: 6 },
-  sofa:       { 3: 2,   4: 4,   5: 8 },
-  maletin:    { 3: 3,   4: 6,   5: 12 },
-  corazon:    { 3: 4,   4: 8,   5: 16 },
-  mascota:    { 3: 6,   4: 12,  5: 24 },
-  auto:       { 3: 8,   4: 16,  5: 32 },
-  dinero:     { 3: 10,  4: 20,  5: 40 },
-  casa:       { 3: 12,  4: 25,  5: 50 },
-  wild:       {},
-  "casa-bonus": { 3: 0 }
+  hombre:     { 3: 2,   4: 5,   5: 10 },
+  sofa:       { 3: 3,   4: 6,   5: 12 },
+  maletin:    { 3: 4,   4: 8,   5: 16 },
+  corazon:    { 3: 5,   4: 10,  5: 20 },
+  mascota:    { 3: 7,   4: 15,  5: 30 },
+  auto:       { 3: 8,   4: 20,  5: 40 },
+  dinero:     { 3: 10,  4: 25,  5: 50 },
+  casa:       { 3: 15,  4: 40,  5: 80 },
+  wild:       {},  // Wild multiplica en bono, no paga base
+  "casa-bonus": { 3: 0 }  // Bono activa giros gratis
 };
 
 function getCurrentBet() {
