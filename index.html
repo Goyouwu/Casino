@@ -22,15 +22,18 @@
         <option value="50">50 CLP</option>
         <option value="100">100 CLP</option>
       </select>
-      <button onclick="spin()">Girar</button>
+      <button id="spinButton" onclick="spin()">Girar</button>
       <button id="soundToggle">🔊</button>
     </div>
 
     <div id="result"></div>
   </div>
 
+  <audio id="spinSound" src="sounds/spin.mp3"></audio>
+  <audio id="winSound" src="sounds/win.mp3"></audio>
+  <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
+  <audio id="jackpotSound" src="sounds/jackpot.mp3"></audio>
+
   <script src="main.js"></script>
 </body>
-
 </html>
-

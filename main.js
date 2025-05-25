@@ -1,10 +1,22 @@
 let balance = 10000;
+let soundOn = true;
 
 const balanceText = document.getElementById("balance");
 const reelsContainer = document.getElementById("reels");
 const resultText = document.getElementById("result");
+const spinButton = document.getElementById("spinButton");
 
-// Símbolos y pesos
+// Sonidos
+const spinSound = document.getElementById("spinSound");
+const winSound = document.getElementById("winSound");
+const bonusSound = document.getElementById("bonusSound");
+const jackpotSound = document.getElementById("jackpotSound");
+
+document.getElementById("soundToggle").addEventListener("click", () => {
+  soundOn = !soundOn;
+  document.getElementById("soundToggle").textContent = soundOn ? "🔊" : "🔇";
+});
+
 const symbols = [
   { name: "hombre", img: "img/Hombre.png", weight: 25 },
   { name: "sofa", img: "img/sofa.png", weight: 20 },
@@ -18,7 +30,6 @@ const symbols = [
   { name: "casa-bonus", img: "img/casa-bonus.png", weight: 3 }
 ];
 
-// Tabla de pagos ajustada (basada en apuesta 25 CLP)
 const payouts = {
   hombre:     { 3: 1,   4: 3,   5: 6 },
   sofa:       { 3: 2,   4: 4,   5: 8 },
@@ -33,8 +44,7 @@ const payouts = {
 };
 
 function getCurrentBet() {
-  const betSelect = document.getElementById("betAmount");
-  return parseInt(betSelect.value);
+  return parseInt(document.getElementById("betAmount").value);
 }
 
 function updateBalanceText() {
@@ -54,9 +64,13 @@ function spin() {
     return;
   }
 
+  spinButton.disabled = true;
+  if (soundOn) spinSound.play();
+
   reelsContainer.innerHTML = "";
   resultText.textContent = "";
   balance -= currentBet;
+  updateBalanceText();
 
   const grid = [];
   const elements = [];
@@ -82,17 +96,20 @@ function spin() {
     elements.push(rowElements);
   }
 
-  if (bonusCount >= 3) {
-    triggerBonus(currentBet);
-  } else {
-    const { win, winningCoords } = evaluateWin(grid, currentBet);
-    balance += win;
-    winningCoords.forEach(([r, c]) => {
-      elements[r][c].classList.add("win-highlight");
-    });
-    updateBalanceText();
-    resultText.textContent = win > 0 ? `¡Ganaste $${Math.floor(win)} CLP!` : "No ganaste, intenta otra vez.";
-  }
+  setTimeout(() => {
+    if (bonusCount >= 3) {
+      if (soundOn) bonusSound.play();
+      triggerBonus(currentBet);
+    } else {
+      const { win, winningCoords } = evaluateWin(grid, currentBet);
+      if (win > 0 && soundOn) winSound.play();
+      balance += win;
+      winningCoords.forEach(([r, c]) => elements[r][c].classList.add("win-highlight"));
+      updateBalanceText();
+      resultText.textContent = win > 0 ? `¡Ganaste $${Math.floor(win)} CLP!` : "No ganaste, intenta otra vez.";
+      spinButton.disabled = false;
+    }
+  }, 600);
 }
 
 function evaluateWin(grid, currentBet) {
@@ -144,18 +161,16 @@ function triggerBonus(currentBet) {
   let stickyWilds = [];
   let spinIndex = 0;
 
-  resultText.textContent = "🎉 ¡BONO ACTIVADO! 10 giros gratis 🎉";
-
   function playBonusSpin() {
     if (spinIndex >= 10) {
       const isJackpot = Math.random() < 1 / 400;
-      if (isJackpot) {
-        totalWin = 500 * currentBet;
-      }
+      if (isJackpot && soundOn) jackpotSound.play();
+      if (isJackpot) totalWin = 500 * currentBet;
 
       balance += totalWin;
       updateBalanceText();
       resultText.textContent += `\n🎊 Bono finalizado: ganaste un total de $${Math.floor(totalWin)} CLP`;
+      spinButton.disabled = false;
       return;
     }
 
@@ -170,7 +185,7 @@ function triggerBonus(currentBet) {
 
         if (sticky) {
           const multiplier = sticky[2];
-          symbol = { name: "wild", img: `img/wild_${multiplier}x.png`, multiplier };
+          symbol = { name: "wild", img: `img/Wild_${multiplier}x.png`, multiplier };
         } else {
           symbol = weightedRandomSymbol();
           if (symbol.name === "wild") {
@@ -181,7 +196,6 @@ function triggerBonus(currentBet) {
         }
 
         rowSymbols.push(symbol);
-
         const div = document.createElement("div");
         div.className = "reel";
         const img = document.createElement("img");
@@ -233,12 +247,14 @@ function triggerBonus(currentBet) {
       }
     });
 
+    if (roundWin > 0 && soundOn) winSound.play();
     totalWin += roundWin;
     resultText.textContent = `🎰 Giro ${spinIndex + 1}/10: Ganaste $${Math.floor(roundWin)} CLP`;
 
     spinIndex++;
-    setTimeout(playBonusSpin, 1000);
+    setTimeout(playBonusSpin, 1200);
   }
 
+  resultText.textContent = "🎉 ¡BONO ACTIVADO! 10 giros gratis 🎉";
   playBonusSpin();
 }
