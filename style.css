@@ -16,7 +16,7 @@ body {
 
 /* Contenedor principal del slot */
 .slot-container {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0);
   border-radius: 20px;
   padding: 20px;
   display: inline-block;
